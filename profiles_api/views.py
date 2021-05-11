@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response # when calling the APIVIew it will return you the standard object
 from rest_framework import status # returns HTTP status code with the APIs called
+from rest_framework import viewsets
 
 from profiles_api import serializers
 
@@ -56,3 +57,51 @@ class HelloAPIView(APIView):
     def delete(self, request, pk=None):
         """Delete an object"""
         return Response({'method':'DELETE'})
+
+# creating a viewset
+
+class HelloViewSet(viewsets.ViewSet):
+    """Test API ViewSet"""
+
+    # Adding the serializer class, we can use the same serializers
+    serializer_class = serializers.HelloSerializer
+
+    def list(self, request):
+        """List of features provided by viewset"""
+
+        a_viewset = [
+        'uses actions (list, create, retriev, partial_update, update, destroy)',
+        'Autoatically maps to URLs using routers',
+        'Provides more functionality with less code'
+        ]
+
+        return Response({'Message':"Hello", 'a_viewset':a_viewset})
+
+    def create(self, request):
+        """Creates a new Hello message"""
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}!'
+            return Response({'message':message})
+        else:
+            return Response(serializer.errors,
+            status = status.HTTP_400_BAD_REQUEST
+            )
+
+    def retrieve(self, request, pk=None):
+        """Handle retrieval of object on ID"""
+        return Response({'http_method':'GET'})
+
+    def update(self, request, pk=None):
+        """Handle upadting the object based on ID"""
+        return Response({'http_method':"PUT"})
+
+    def partial_update(self, request, pk=None):
+        """Handles updating part of an object"""
+        return Response({'http_method':"PATCH"})
+
+    def destroy(self, request, pk=None):
+        """Handles deletion of an object"""
+        return Response({'http_method':"DELETE"})
