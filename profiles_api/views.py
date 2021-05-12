@@ -3,6 +3,7 @@ from rest_framework.response import Response # when calling the APIVIew it will 
 from rest_framework import status # returns HTTP status code with the APIs called
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
 
 from profiles_api import serializers
 from profiles_api import models
@@ -119,3 +120,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     Authentication_classes = (TokenAuthentication,) # it is a type of authentication we are going to use
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,) # built in class which allows to search using SearchFilters
+    search_fields = ('name', 'email',) # on what filters do we want to search the profiles
