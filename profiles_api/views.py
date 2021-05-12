@@ -4,6 +4,8 @@ from rest_framework import status # returns HTTP status code with the APIs calle
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
 
 from profiles_api import serializers
 from profiles_api import models
@@ -122,3 +124,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,) # built in class which allows to search using SearchFilters
     search_fields = ('name', 'email',) # on what filters do we want to search the profiles
+
+
+class UserLoginApiView(ObtainAuthToken):
+    """Handle creating user authentication Tokens"""
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
