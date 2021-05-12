@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls), # links the admin URL to the admin app
-    path('api/', include('profiles_api.urls'))
+    path('api/', include('profiles_api.urls')) #links all the api functionalities
 ]
